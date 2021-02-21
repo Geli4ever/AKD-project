@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>AKD Project</title>
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap4-toggle/bootstrap4-toggle.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+	<div class="container py-5">
+    <div class="row">
+        <div class="col-10 mx-auto">
+            <h1>Upload CSV File with Persons</h1>
+			<form method="POST" th:action="@{/upload-csv-file}" enctype="multipart/form-data">
+    			<div class="form-group mt-3">
+        			<label for="file">Select a CSV file</label>
+        			<input type="file" name="file" class="form-control-file" id="file" accept=".csv">
+    			</div>
+    			<button type="submit" class="btn btn-primary">Import Persons</button>
+			</form>
+	    </div>
+    </div>
+	</div>
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{assets/bootstrap4-toggle/bootstrap4-toggle.min.js}"></script>
+</body>
+</html>
