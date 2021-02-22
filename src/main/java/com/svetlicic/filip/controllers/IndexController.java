@@ -14,16 +14,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.svetlicic.filip.Validators.DateValidator;
 import com.svetlicic.filip.modelDTO.PersonDTO;
 import com.svetlicic.filip.services.PersonService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class IndexController {
 	
 	private final PersonService personService;
+	private final DateValidator dateValidator;
 	
-	public IndexController(PersonService personService) {
+	public IndexController(PersonService personService, DateValidator dateValidator) {
 		this.personService = personService;
+		this.dateValidator = dateValidator;
 	}
 
     @GetMapping({"", "/", "index", "index.html"})
@@ -48,14 +54,20 @@ public class IndexController {
 
                 List<PersonDTO> persons = csvToBean.parse();
                 
+                int i = 1;
                 for(PersonDTO person : persons) {
-                	personService.savePersonDTO(person);
+                	if(dateValidator.isValid(person.getBirthday())) {
+                		personService.savePersonDTO(person);
+                		
+                	} else {
+                		log.error("Bad date format on row num " + i);
+                	}
+                	i++;
                 }
 
-                // save users list on model
                 model.addAttribute("persons", persons);
                 model.addAttribute("status", true);
-
+                
             } catch (Exception ex) {
                 model.addAttribute("message", "An error occurred while processing the CSV file.");
                 model.addAttribute("status", false);
